@@ -1,0 +1,24 @@
+{
+  "name": "bendorp-staff-crm-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "seed": "node seed.js",
+    "db:init": "node tools/run-sql.js server/schema.sql"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

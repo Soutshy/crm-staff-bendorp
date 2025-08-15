@@ -1,4 +1,4 @@
-// server/index.js
+// server/app.js
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
@@ -7,36 +7,37 @@ import authRouter from './routes/auth.js'
 import staffRouter from './routes/staff.js'
 import sanctionsRouter from './routes/sanctions.js'
 import recruitmentsRouter from './routes/recruitments.js'
-import usersRouter from './routes/users.js'   // <= ta nouvelle route comptes
+import usersRouter from './routes/users.js'
 
 dotenv.config()
 
-const app = express()
-const PORT = process.env.PORT || 4000
-const ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173'
+export function buildApp() {
+  const app = express()
 
-// Middlewares
-app.use(cors({ origin: ORIGIN, credentials: true }))
-app.use(express.json())
+  // CORS: accepte une ou plusieurs origines séparées par des virgules
+  const origins = (process.env.CLIENT_ORIGIN || '').split(',').map(s => s.trim()).filter(Boolean)
+  app.use(cors({ origin: origins.length ? origins : true, credentials: true }))
 
-// Healthcheck
-app.get('/api/health', (req, res) => res.json({ ok: true }))
+  app.use(express.json())
 
-// Routes API
-app.use('/api/auth', authRouter)
-app.use('/api/staff', staffRouter)
-app.use('/api/sanctions', sanctionsRouter)
-app.use('/api/recruitments', recruitmentsRouter)
-app.use('/api/users', usersRouter)           // <= branchée APRÈS la création de app
+  app.get('/api/health', (req, res) => res.json({ ok: true }))
 
-// 404
-app.use((req, res) => res.status(404).json({ error: 'Not found' }))
+  app.use('/api/auth', authRouter)
+  app.use('/api/staff', staffRouter)
+  app.use('/api/sanctions', sanctionsRouter)
+  app.use('/api/recruitments', recruitmentsRouter)
+  app.use('/api/users', usersRouter)
 
-// Handler d’erreurs
-app.use((err, req, res, next) => {
-  console.error(err)
-  res.status(500).json({ error: 'Internal server error' })
-})
+  app.use((req, res) => res.status(404).json({ error: 'Not found' }))
 
-// Start
-app.listen(PORT, () => console.log(`Server listening on :${PORT}`))
+  // handler erreurs (facultatif en serverless, mais ok)
+  app.use((err, req, res, next) => {
+    console.error(err)
+    res.status(500).json({ error: 'Internal server error' })
+  })
+
+  return app
+}
+
+const app = buildApp()
+export default app

@@ -10,6 +10,7 @@
     "db:init": "node tools/run-sql.js server/schema.sql"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

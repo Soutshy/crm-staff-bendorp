@@ -3,11 +3,11 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 
-import authRouter from './routes/auth.js'
-import staffRouter from './routes/staff.js'
-import sanctionsRouter from './routes/sanctions.js'
-import recruitmentsRouter from './routes/recruitments.js'
-import usersRouter from './routes/users.js'
+import authRouter from '../routes/auth.js'
+import staffRouter from '../routes/staff.js'
+import sanctionsRouter from '../routes/sanctions.js'
+import recruitmentsRouter from '../routes/recruitments.js'
+import usersRouter from '../routes/users.js'
 
 dotenv.config()
 
